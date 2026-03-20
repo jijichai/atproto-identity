@@ -11,16 +11,31 @@ export class HandleResolver {
   private backupNameserverIps: string[] | undefined
   private ensResolver: EnsHandleResolver | undefined
 
-  constructor(opts: HandleResolverOpts = {}) {
+constructor(opts: HandleResolverOpts = {}) {
     this.timeout = opts.timeout ?? 3000
     this.backupNameservers = opts.backupNameservers
-    
-    // Initialize ENS resolver if config provided
-    if (opts.ensConfig) {
-      this.ensResolver = new EnsHandleResolver(opts.ensConfig)
+
+    // Initialize ENS resolver from opts or environment variables
+    const ensConfig = opts.ensConfig ?? this.getEnsConfigFromEnv()
+    if (ensConfig) {
+      this.ensResolver = new EnsHandleResolver(ensConfig)
     }
   }
 
+  private getEnsConfigFromEnv(): EnsResolverConfig | undefined {
+    const providerUrl = process.env.PDS_ENS_PROVIDER_URL
+    const chainId = process.env.PDS_ENS_CHAIN_ID
+    if (providerUrl && chainId) {
+      return {
+        providerUrl,
+        chainId: parseInt(chainId, 10),
+        timeout: process.env.PDS_ENS_TIMEOUT
+          ? parseInt(process.env.PDS_ENS_TIMEOUT, 10)
+          : undefined,
+      }
+    }
+    return undefined
+  }
   async resolve(handle: string): Promise<string | undefined> {
     // Try ENS first for .eth names
     if (this.ensResolver && this.isEnsName(handle)) {
