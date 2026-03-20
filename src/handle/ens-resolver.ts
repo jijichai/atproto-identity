@@ -40,10 +40,10 @@ export class EnsHandleResolver {
       }
 
       // Query the _atproto text record
-      const did = await resolver.getText('_atproto')
+      const record = await resolver.getText('_atproto')
+      const did = record?.startsWith('did=') ? record.slice(4) : record
 
-      if (did) {
-        // Cache the result
+      if (did && did.startsWith('did:')) {        // Cache the result
         this.cache.set(handle, { did, timestamp: Date.now() })
       }
 
