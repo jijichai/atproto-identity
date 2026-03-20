@@ -1,6 +1,15 @@
 {
-  "extends": "../../tsconfig/isomorphic.json",
   "compilerOptions": {
+    "target": "es2021",
+    "module": "commonjs",
+    "lib": ["es2021"],
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "rootDir": "./src",
     "outDir": "./dist"
   },

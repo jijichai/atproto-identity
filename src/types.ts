@@ -1,19 +1,15 @@
 import { DidDocument } from '@atproto/common-web'
+import { EnsResolverConfig } from './handle/ens-resolver'
 
 export { didDocument } from '@atproto/common-web'
 export type { DidDocument } from '@atproto/common-web'
+export type { EnsResolverConfig }
 
 export type IdentityResolverOpts = {
   timeout?: number
   plcUrl?: string
   didCache?: DidCache
   backupNameservers?: string[]
-}
-
-export type EnsResolverConfig = {
-  providerUrl: string
-  chainId: number
-  timeout?: number
 }
 
 export type HandleResolverOpts = {
